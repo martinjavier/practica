@@ -1,0 +1,37 @@
+<div>
+  <div>
+    <h1>Productos</h1>
+  </div>
+  <div id="productList"></div>
+  <div>
+    <table style="width:70%; background-color: #555555; font-size: 25px;">
+      <tr style="background-color: #000000;">
+        <td><b>id</b></td>
+        <td><b>title</b></td>
+        <td><b>description</b></td>
+        <td><b>code</b></td>
+        <td><b>price</b></td>
+        <td><b>status</b></td>
+        <td><b>stock</b></td>
+        <td><b>category</b></td>
+        <td><b>thumbnails</b></td>
+      </tr>
+      {{#each products}}
+        <tr>
+          <td headers="id">{{id}}</td>
+          <td headers="title">{{title}}</td>
+          <td headers="description">{{description}}</td>
+          <td headers="code">{{code}}</td>
+          <td headers="price">{{price}}</td>
+          <td headers="status">{{status}}</td>
+          <td headers="stock">{{stock}}</td>
+          <td headers="category">{{category}}</td>
+          <td headers="thumbnails">{{thumbnails}}</td>
+        </tr>
+      {{/each}}
+    </table>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
