@@ -2,17 +2,30 @@ import { Router, json } from "express";
 import { CartManager } from "../dao/index.js";
 import { ProductManager } from "../dao/index.js";
 
-const cartsManager = new CartManager("../file-managers/files/Carts.json");
-const productsManager = new ProductManager(
-  "../file-managers/files/Products.json"
-);
-
+const cartsManager = new CartManager();
 const cartsRouter = Router();
 cartsRouter.use(json());
 
+const productManager = new ProductManager();
 const productsRouter = Router();
 productsRouter.use(json());
 
+// Postman GET http://localhost:8080/carts => Todos los carritos
+cartsRouter.get("/", async (req, res) => {
+  const carts = await cartsManager.getCarts();
+  res.send(carts);
+});
+
+// Postman POST { "products": [ { "id": "01202318416858", "quantity": 5 }, {"id": "01202318435129", "quantity": 10}, {"id": "01202318451768", "quantity": 15}] }
+cartsRouter.post("/", async (req, res) => {
+  const { products } = req.body;
+
+  const result = await cartsManager.create({ products });
+
+  res.status(201).send({ status: "ok", payload: result });
+});
+
+/*
 // Ej http://localhost:8080/carts?limit=3 => Primeros tres carritos
 // Ej http://localhost:8080/carts => Todos los carritos
 cartsRouter.get("/", async (req, res) => {
@@ -32,7 +45,9 @@ cartsRouter.get("/", async (req, res) => {
     return res.send(selected);
   }
 });
+*/
 
+/*
 // Ej http://localhost:8080/carts/2 => Cart 2
 // Ej http://localhost:8080/cart/3412 => Error
 cartsRouter.get("/:id", async (req, res) => {
@@ -47,14 +62,18 @@ cartsRouter.get("/:id", async (req, res) => {
     res.send(cart);
   }
 });
+*/
 
+/*
 // Postman POST { "products": [ { "id": "01202318416858", "quantity": 5 }, {"id": "01202318435129", "quantity": 10}, {"id": "01202318451768", "quantity": 15}] }
 cartsRouter.post("/", async (req, res) => {
   const products = req.body.products;
   let newCart = await cartsManager.addCart(products);
   res.send(newCart);
 });
+*/
 
+/*
 // Postman POST http://localhost:8080/api/carts/11202322154781/product/01202318451768
 cartsRouter.post("/:cid/product/:pid", async (req, res) => {
   // Recupero los valores de params
@@ -91,7 +110,9 @@ cartsRouter.post("/:cid/product/:pid", async (req, res) => {
       .send({ message: `There is not a cart with ID ${cartID}` });
   }
 });
+*/
 
+/*
 // Postman DELETE http://localhost:8080/api/carts/11202322030908
 cartsRouter.delete("/:cid", async (req, res) => {
   // Recupero los valores de params
@@ -99,7 +120,9 @@ cartsRouter.delete("/:cid", async (req, res) => {
   let deletedCart = await cartsManager.deleteCart(cartID);
   res.send(deletedCart);
 });
+*/
 
+/*
 // Postman DELETE http://localhost:8080/api/carts/212023215210444/product/01202318416858
 cartsRouter.delete("/:cid/product/:pid", async (req, res) => {
   // Recupero los valores de params
@@ -133,5 +156,6 @@ cartsRouter.delete("/:cid/product/:pid", async (req, res) => {
       .send({ message: `Doesn't exist a Cart with ID ${cartID}` });
   }
 });
+*/
 
 export default cartsRouter;

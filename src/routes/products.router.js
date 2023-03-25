@@ -1,13 +1,46 @@
 import { Router, json } from "express";
 import { ProductManager } from "../dao/index.js";
 
-const manager = new ProductManager();
-
+const productManager = new ProductManager();
 const productsRouter = Router();
+
 productsRouter.use(json());
+
+// Ej http://localhost:8080/api/products => Todos los productos
+productsRouter.get("/", async (req, res) => {
+  const products = await productManager.getProducts();
+  res.send(products);
+});
+
+productsRouter.post("/", async (req, res) => {
+  const {
+    title,
+    description,
+    code,
+    price,
+    status,
+    stock,
+    category,
+    thumbnails,
+  } = req.body;
+
+  const result = await productManager.create({
+    title,
+    description,
+    code,
+    price,
+    status,
+    stock,
+    category,
+    thumbnails,
+  });
+
+  res.status(201).send({ status: "ok", payload: result });
+});
 
 // Ej http://localhost:8080/products?limit=3 => Primeros tres productos
 // Ej http://localhost:8080/products => Todos los productos
+/*
 productsRouter.get("/", async (req, res) => {
   // Recupero los productos
   const products = await manager.getProducts();
@@ -25,9 +58,11 @@ productsRouter.get("/", async (req, res) => {
     return res.send(selected);
   }
 });
+*/
 
 // Ej http://localhost:8080/products/2 => Prod 2
 // Ej http://localhost:8080/products/3412 => Error
+/*
 productsRouter.get("/:id", async (req, res) => {
   // Obtengo el valor del elemento
   let id = req.params.id;
@@ -41,7 +76,9 @@ productsRouter.get("/:id", async (req, res) => {
     res.send(product);
   }
 });
+*/
 
+/*
 productsRouter.post("/", async (req, res) => {
   const {
     title,
@@ -54,7 +91,7 @@ productsRouter.post("/", async (req, res) => {
     thumbnails,
   } = req.body;
 
-  let newProd = await manager.addProduct(
+  let newProd = await manager.create(
     title,
     description,
     code,
@@ -66,7 +103,9 @@ productsRouter.post("/", async (req, res) => {
   );
   res.send(newProd);
 });
+*/
 
+/*
 productsRouter.post("/:id", async (req, res) => {
   // Obtengo el valor del elemento
   let prodID = req.params.id;
@@ -95,7 +134,9 @@ productsRouter.post("/:id", async (req, res) => {
   );
   res.send(updatedProd);
 });
+*/
 
+/*
 productsRouter.delete("/:id", async (req, res) => {
   // Obtengo el valor del elemento
   let prodID = req.params.id;
@@ -103,5 +144,6 @@ productsRouter.delete("/:id", async (req, res) => {
   let deletedProd = await manager.deleteProduct(prodID);
   res.send(deletedProd);
 });
+*/
 
 export default productsRouter;

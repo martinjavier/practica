@@ -4,6 +4,7 @@ import __dirname from "./utils.js";
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
+import messagesRouter from "./routes/message.router.js";
 import { Server } from "socket.io";
 import mongoose from "mongoose";
 
@@ -21,10 +22,15 @@ app.use(express.static(__dirname + "/../public"));
 app.use("/", viewsRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
+app.use("/api/messages", messagesRouter);
 
-mongoose.connect("connection-string").then((conn) => {
-  console.log("Connected To DB!");
-});
+mongoose
+  .connect(
+    "mongodb+srv://martinjavierd:omUWm0m05QI04tkc@cluster0.oonlc.mongodb.net/ecommerce?retryWrites=true&w=majority"
+  )
+  .then((conn) => {
+    console.log("Connected To DB!");
+  });
 
 const httpServer = app.listen(8080, () => {
   console.log("Server listening on port 8080");

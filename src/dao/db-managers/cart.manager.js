@@ -1,4 +1,4 @@
-import cartModel from "../file-managers/models/cart.model.js";
+import cartModel from "../db-models/cart.model.js";
 
 export default class CartManager {
   constructor() {
@@ -13,5 +13,11 @@ export default class CartManager {
   create = async (cart) => {
     const result = await cartModel.create(cart);
     return result;
+  };
+
+  addProduct = async (cartId, productId) => {
+    const cart = await cartModel.findById(cartId);
+    cart.products.push({ productId });
+    return cart.save();
   };
 }
