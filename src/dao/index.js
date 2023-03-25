@@ -19,6 +19,7 @@ if (config.persistenceType === "db") {
 } else if (config.persistenceType === "file") {
   CartManager = FileCartManager;
   ProductManager = FileProductManager;
+  MessageManager = FileMessageManager;
 } else {
   throw new Error("Unknow persistence type");
 }
