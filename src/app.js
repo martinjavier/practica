@@ -26,13 +26,9 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/messages", messagesRouter);
 
-mongoose
-  .connect(
-    "mongodb+srv://martinjavierd:omUWm0m05QI04tkc@cluster0.oonlc.mongodb.net/ecommerce?retryWrites=true&w=majority"
-  )
-  .then((conn) => {
-    console.log("Connected To DB!");
-  });
+mongoose.connect("connection-string").then((conn) => {
+  console.log("Connected To DB!");
+});
 
 const httpServer = app.listen(8080, () => {
   console.log("Server listening on port 8080");
