@@ -5,13 +5,13 @@ const messageManager = new MessageManager();
 const messageRouter = Router();
 messageRouter.use(json());
 
-// Postman GET http://localhost:8080/api/message => Todos los carritos
+// Postman GET http://localhost:8080/api/message => Todos los mensajes
 messageRouter.get("/", async (req, res) => {
   const messages = await messageManager.getMessages();
   res.send(messages);
 });
 
-// Postman POST
+// Postman POST { "user": "martin@hotmail.com", "message": "Este es un mensaje de prueba" }
 messageRouter.post("/", async (req, res) => {
   const { user, message } = req.body;
   const result = await messageManager.create({ user, message });

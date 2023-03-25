@@ -10,18 +10,17 @@ const productManager = new ProductManager();
 const productsRouter = Router();
 productsRouter.use(json());
 
-// Postman GET http://localhost:8080/carts => Todos los carritos
+// Postman GET http://localhost:8080/api/carts => Todos los carritos
 cartsRouter.get("/", async (req, res) => {
   const carts = await cartsManager.getCarts();
   res.send(carts);
 });
 
-// Postman POST { "products": [ { "id": "01202318416858", "quantity": 5 }, {"id": "01202318435129", "quantity": 10}, {"id": "01202318451768", "quantity": 15}] }
+// Postman POST http://localhost:8080/api/carts
+// { "products": [ { "id": "01202318416858", "quantity": 5 }, {"id": "01202318435129", "quantity": 10}, {"id": "01202318451768", "quantity": 15}] }
 cartsRouter.post("/", async (req, res) => {
   const { products } = req.body;
-
   const result = await cartsManager.create({ products });
-
   res.status(201).send({ status: "ok", payload: result });
 });
 

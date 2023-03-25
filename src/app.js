@@ -9,6 +9,8 @@ import { Server } from "socket.io";
 import mongoose from "mongoose";
 
 const app = express();
+const messages = [];
+
 app.use(express.json());
 
 // Handlebars
@@ -24,9 +26,13 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/messages", messagesRouter);
 
-mongoose.connect("connection-string").then((conn) => {
-  console.log("Connected To DB!");
-});
+mongoose
+  .connect(
+    "mongodb+srv://martinjavierd:omUWm0m05QI04tkc@cluster0.oonlc.mongodb.net/ecommerce?retryWrites=true&w=majority"
+  )
+  .then((conn) => {
+    console.log("Connected To DB!");
+  });
 
 const httpServer = app.listen(8080, () => {
   console.log("Server listening on port 8080");
@@ -39,6 +45,16 @@ socketServer.on("connection", (socket) => {
 
   socket.on("message", (data) => {
     socket.emit("input-changed", JSON.stringify(data));
+  });
+
+  socket.on("chat-message", (data) => {
+    messages.push(data);
+    socket.emit("messages", messages);
+  });
+
+  socket.on("new-user", (username) => {
+    socket.emit("messages", messages);
+    socket.broadcast.emit("new-user", username);
   });
 
   socket.on("input-changed", (data) => {

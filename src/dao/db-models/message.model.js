@@ -5,8 +5,7 @@ const messageSchema = new mongoose.Schema({
     type: String,
   },
   message: {
-    type: Array,
-    default: [],
+    type: String,
   },
 });
 
