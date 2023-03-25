@@ -4,7 +4,7 @@ import FileMessageManager from "./file-managers/message.manager.js";
 
 import DbCartManager from "./db-managers/cart.manager.js";
 import DbProductManager from "./db-managers/product.manager.js";
-import DbMessageManager from "./db-managers/messasge.manager.js";
+import DbMessageManager from "./db-managers/message.manager.js";
 
 const config = {
   persistenceType: "db",

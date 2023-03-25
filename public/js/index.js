@@ -1,20 +1,44 @@
 const socket = io();
 
-socket.on("message", (data) => {
-  console.log(data);
+let username;
+
+Swal.fire({
+  title: "Identificate",
+  input: "text",
+  text: "Ingresa tu nombre de usuario",
+  inputValidator: (value) => {
+    return !value && "Es obligatorio instroducir un nombre de usuario";
+  },
+  allowOutsideClick: false,
+}).then((result) => {
+  username = result.value;
+  socket.emit("new-user", username);
 });
 
-socket.on("input-changed", (data) => {
-  const productList = document.getElementById("productList");
-  productList.innerHTML = data;
+const chatInput = document.getElementById("chat-input");
+
+chatInput.addEventListener("keyup", (ev) => {
+  if (ev.key === "Enter") {
+    const inputMessage = chatInput.value;
+    if (inputMessage.trim().length > 0) {
+      let timestamp = new Date().toISOString();
+      socket.emit("chat-message", {
+        timestamp,
+        username,
+        message: inputMessage,
+      });
+    }
+    chatInput.value = "";
+  }
 });
 
-const textInput = document.getElementById("text-input");
-textInput.addEventListener("input", (ev) => {
-  socket.emit("input-changed", ev.target.value);
-});
+const messageElement = document.getElementById("messages-panel");
+socket.on("messages", (data) => {
+  let messages = "";
 
-const sendButton = document.getElementById("send-button");
-sendButton.addEventListener("click", (ev) => {
-  socket.emit("new-message", textInput.value);
+  data.forEach((m) => {
+    messages += `<b>(${m.timestamp})</b> <b>${m.username}:</b> ${m.message}</br>`;
+  });
+
+  messageElement.innerHTML = messages;
 });
