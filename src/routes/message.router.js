@@ -11,7 +11,8 @@ messageRouter.get("/", async (req, res) => {
   res.send(messages);
 });
 
-// Postman POST { "user": "martin@hotmail.com", "message": "Este es un mensaje de prueba" }
+// Postman POST http://localhost:8080/api/message
+// { "user": "martin@hotmail.com", "message": "Este es un mensaje de prueba" }
 messageRouter.post("/", async (req, res) => {
   const { user, message } = req.body;
   const result = await messageManager.create({ user, message });

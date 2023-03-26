@@ -18,7 +18,7 @@
       </tr>
       {{#each products}}
         <tr>
-          <td headers="id">{{id}}</td>
+          <td headers="id">{{_id}}</td>
           <td headers="title">{{title}}</td>
           <td headers="description">{{description}}</td>
           <td headers="code">{{code}}</td>
@@ -38,16 +38,12 @@
   <div>
     {{#each messages}}
       <div>
-        <p>{{user}} : {{message}}</p>
+        <p>({{user}}) {{message}}</p>
       </div>
     {{/each}}
   </div>
   <h3>Sección del CHAT</h3>
   <div> <input id="chat-input" /> </div>
-  <div>
-    <p>mensajes</p>
-    <p style="border: 1px solid #ccc!important;" id="messages-panel"></p>
-  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
