@@ -7,9 +7,11 @@ import viewsRouter from "./routes/views.router.js";
 import messagesRouter from "./routes/message.router.js";
 import { Server } from "socket.io";
 import mongoose from "mongoose";
+import { MessageManager } from "../src/dao/index.js";
 
 const app = express();
 const messages = [];
+const messageManager = new MessageManager();
 
 app.use(express.json());
 
@@ -43,8 +45,11 @@ socketServer.on("connection", (socket) => {
     socket.emit("input-changed", JSON.stringify(data));
   });
 
-  socket.on("chat-message", (data) => {
+  socket.on("chat-message", async (data) => {
     messages.push(data);
+    const username = data.username;
+    const message = data.message;
+    const result = await messageManager.create({ username, message });
     socket.emit("messages", messages);
   });
 

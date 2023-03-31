@@ -12,7 +12,13 @@ router.get("/real-time-products", async (req, res) => {
   let products = await prodManager.getProducts();
   let messageManager = new MessageManager();
   let messages = await messageManager.getMessages();
-  res.render("real_time_products", { products: products, messages: messages });
+  res.render("real_time_products", { products: products });
+});
+
+router.get("/chat", async (req, res) => {
+  let messageManager = new MessageManager();
+  let messages = await messageManager.getMessages();
+  res.render("chat", { messages: messages });
 });
 
 export default router;
