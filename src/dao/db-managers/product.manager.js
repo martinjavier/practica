@@ -15,11 +15,13 @@ export default class ProductManager {
     return result;
   };
 
-  /*
-  addProduct = async (cartId, productId) => {
-    const cart = await cartModel.findById(cartId);
-    cart.products.push({ productId });
-    return cart.save();
+  delete = async (prodId) => {
+    const result = await productModel.deleteOne(prodId);
+    return result;
   };
-  */
+
+  getOneProd = async (prodId) => {
+    const result = await productModel.find(prodId).lean();
+    return result;
+  };
 }

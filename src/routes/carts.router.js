@@ -24,6 +24,20 @@ cartsRouter.post("/", async (req, res) => {
   res.status(201).send({ status: "ok", payload: result });
 });
 
+// Postman DELETE http://localhost:8080/api/carts/642660d39cd3ec80e43f50ab
+cartsRouter.delete("/:id", async (req, res) => {
+  const { cartId } = req.params;
+  const carts = await cartsManager.delete(cartId);
+  res.send(carts);
+});
+
+// Postman GET http://localhost:8080/api/carts
+cartsRouter.get("/:id", async (req, res) => {
+  const { cartId } = req.params;
+  const cart = await cartsManager.getOneCart(cartId);
+  res.send(cart);
+});
+
 /*
 // Ej http://localhost:8080/carts?limit=3 => Primeros tres carritos
 // Ej http://localhost:8080/carts => Todos los carritos

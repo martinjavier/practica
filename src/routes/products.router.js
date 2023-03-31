@@ -3,15 +3,16 @@ import { ProductManager } from "../dao/index.js";
 
 const productManager = new ProductManager();
 const productsRouter = Router();
-
 productsRouter.use(json());
 
-// Ej http://localhost:8080/api/products => Todos los productos
+// Postman GET http://localhost:8080/api/products => Todos los productos
 productsRouter.get("/", async (req, res) => {
   const products = await productManager.getProducts();
   res.send(products);
 });
 
+// Postman POST
+// {"title":"Tercero", "description":"Descripción Tercero", "code":"abc103", "price":300,  "status":true,  "stock":300,  "category":"Tercero",  "thumbnails":[]}
 productsRouter.post("/", async (req, res) => {
   const {
     title,
@@ -36,6 +37,20 @@ productsRouter.post("/", async (req, res) => {
   });
 
   res.status(201).send({ status: "ok", payload: result });
+});
+
+// Postman DELETE http://localhost:8080/api/carts/642660d39cd3ec80e43f50ab
+productsRouter.delete("/:id", async (req, res) => {
+  const { prodId } = req.params;
+  const deleteProd = await productManager.delete(prodId);
+  res.send(deleteProd);
+});
+
+// Postman GET http://localhost:8080/api/products/64266458ef82d358d9ac3ea4
+productsRouter.get("/:id", async (req, res) => {
+  const { prodId } = req.params;
+  const product = await productManager.getOneProduct(prodId);
+  res.send(product);
 });
 
 // Ej http://localhost:8080/products?limit=3 => Primeros tres productos
