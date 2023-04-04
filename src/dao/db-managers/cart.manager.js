@@ -30,4 +30,16 @@ export default class CartManager {
     const result = await cartModel.find(cartId).lean();
     return result;
   };
+
+  deleteProd = async (cartId, prodId) => {
+    if (!cartId || !prodId) {
+      console.log("falta Información");
+    } else {
+      let prodDeleted = await cartModel.updateOne(
+        { _id: cartId },
+        { $pull: { products: { id: prodId } } }
+      );
+      return prodDeleted;
+    }
+  };
 }

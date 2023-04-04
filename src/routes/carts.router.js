@@ -12,8 +12,8 @@ productsRouter.use(json());
 
 // Postman GET http://localhost:8080/api/carts => Todos los carritos
 cartsRouter.get("/", async (req, res) => {
-  const carts = await cartsManager.getCarts();
-  res.send(carts);
+  const cart = await cartsManager.getCarts();
+  res.send(cart);
 });
 
 // Postman POST http://localhost:8080/api/carts
@@ -36,6 +36,14 @@ cartsRouter.get("/:id", async (req, res) => {
   const { cartId } = req.params;
   const cart = await cartsManager.getOneCart(cartId);
   res.send(cart);
+});
+
+// Postman DELETE http://localhost:8080/api/carts/642c52b03c49ee17a8574a02/product/64266458ef82d358d9ac3ea4
+cartsRouter.delete("/:cId/product/:pId", async (req, res) => {
+  const { cId } = req.params;
+  const { pId } = req.params;
+  const prodToDel = await cartsManager.deleteProd(cId, pId);
+  res.send(prodToDel);
 });
 
 /*
