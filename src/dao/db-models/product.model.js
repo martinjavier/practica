@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const productsSchema = new mongoose.Schema({
   title: {
@@ -26,6 +27,12 @@ const productsSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+});
+
+productsSchema.plugin(mongoosePaginate);
+
+productsSchema.pre("findOne", function () {
+  this.populate("products.products");
 });
 
 const productModel = mongoose.model("products", productsSchema);

@@ -6,7 +6,7 @@ export default class CartManager {
   }
 
   getCarts = async () => {
-    const carts = await cartModel.find().lean();
+    const carts = await cartModel.find().populate("products.quantity");
     return carts;
   };
 
@@ -27,8 +27,8 @@ export default class CartManager {
   };
 
   getOneCart = async (cartId) => {
-    const result = await cartModel.find(cartId).lean();
-    return result;
+    const cart = await cartModel.findById(cartId).populate("products.products");
+    return cart;
   };
 
   deleteProd = async (cartId, prodId) => {
@@ -40,6 +40,24 @@ export default class CartManager {
         { $pull: { products: { id: prodId } } }
       );
       return prodDeleted;
+    }
+  };
+
+  updateProductIntoCart = async (cartId, prodId) => {
+    try {
+      if (!cartId || !prodId) {
+        console.log("falta Información");
+      } else {
+        let prodDeleted = await cartModel.updateOne(
+          { _id: cartId },
+          { $pull: { products: { id: prodId } } }
+        );
+        const cart = await cartModel.findById(cartId);
+        cart.products.push({ prodId });
+        return cart.save();
+      }
+    } catch (err) {
+      throw new Error(err);
     }
   };
 }

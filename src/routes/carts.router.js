@@ -31,10 +31,10 @@ cartsRouter.delete("/:id", async (req, res) => {
   res.send(carts);
 });
 
-// Postman GET http://localhost:8080/api/carts
+// Postman GET http://localhost:8080/api/carts/642c52b03c49ee17a8574a02
 cartsRouter.get("/:id", async (req, res) => {
-  const { cartId } = req.params;
-  const cart = await cartsManager.getOneCart(cartId);
+  const { id } = req.params;
+  const cart = await cartsManager.getOneCart(id);
   res.send(cart);
 });
 
@@ -44,6 +44,13 @@ cartsRouter.delete("/:cId/product/:pId", async (req, res) => {
   const { pId } = req.params;
   const prodToDel = await cartsManager.deleteProd(cId, pId);
   res.send(prodToDel);
+});
+
+cartsRouter.put("/:cId/product/:pId", async (req, res) => {
+  const { cId } = req.params;
+  const { pId } = req.params;
+  const prodToUpdate = await cartsManager.updateProductIntoCart(cId, pId);
+  res.status(201).send({ status: "ok", payload: prodToUpdate });
 });
 
 /*

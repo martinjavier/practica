@@ -1,6 +1,6 @@
 const socket = io();
 
-let username;
+let localUsername;
 
 Swal.fire({
   title: "Identificate",
@@ -12,33 +12,26 @@ Swal.fire({
   allowOutsideClick: false,
 }).then((result) => {
   username = result.value;
+  localUsername = result.value;
   socket.emit("new-user", username);
 });
 
 const chatInput = document.getElementById("chat-input");
+const messageElement = document.getElementById("messages-panel");
 
 chatInput.addEventListener("keyup", (ev) => {
   if (ev.key === "Enter") {
+    let messages = "";
     const inputMessage = chatInput.value;
     if (inputMessage.trim().length > 0) {
-      let timestamp = new Date().toISOString();
+      //let timestamp = new Date().toISOString();
       socket.emit("chat-message", {
-        timestamp,
-        username,
+        user: localUsername,
         message: inputMessage,
       });
+      messages += `<b>${localUsername}:</b> ${inputMessage}</br>`;
+      messageElement.innerHTML = messages;
     }
     chatInput.value = "";
   }
-});
-
-const messageElement = document.getElementById("messages-panel");
-socket.on("messages", (data) => {
-  let messages = "";
-
-  data.forEach((m) => {
-    messages += `<b>(${m.timestamp})</b> <b>${m.username}:</b> ${m.message}</br>`;
-  });
-
-  messageElement.innerHTML = messages;
 });

@@ -10,8 +10,8 @@ export default class MessageManager {
     return messages;
   };
 
-  create = async (message) => {
-    const result = await messageModel.create(message);
+  create = async (user, message) => {
+    const result = await messageModel.create({ user, message });
     return result;
   };
 }

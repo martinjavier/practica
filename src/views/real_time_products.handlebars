@@ -30,6 +30,15 @@
         </tr>
       {{/each}}
     </table>
+      <div>
+    {{#if products.hasPrevPage}}
+      <a href="/students?page={{products.prevPage}}">Prevoius</a>
+    {{/if}}
+    <span>Page {{products.page}} de {{products.totalPages}}</span>
+    {{#if products.hasNextPage}}
+      <a href="/students?page={{products.nextPage}}">Next</a>
+    {{/if}}
+  </div>
   </div>
 
 <script src="/socket.io/socket.io.js"></script>

@@ -7,6 +7,17 @@ productsRouter.use(json());
 
 // Postman GET http://localhost:8080/api/products => Todos los productos
 productsRouter.get("/", async (req, res) => {
+  const { page } = req.query;
+  /*
+  const products = await productManager.paginate(
+    {},
+    {
+      limit: 5,
+      lean: true,
+      page: page ?? 1,
+    }
+  );
+  */
   const products = await productManager.getProducts();
   res.send(products);
 });
@@ -48,7 +59,7 @@ productsRouter.delete("/:id", async (req, res) => {
 
 // Postman GET http://localhost:8080/api/products/64266458ef82d358d9ac3ea4
 productsRouter.get("/:id", async (req, res) => {
-  const { prodId } = req.params;
+  const { prodId } = req.params.id;
   const product = await productManager.getOneProduct(prodId);
   res.send(product);
 });

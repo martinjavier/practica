@@ -28,7 +28,7 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/messages", messagesRouter);
 
-mongoose.connect("commit-string").then((conn) => {
+mongoose.connect("connection-string").then((conn) => {
   console.log("Connected To DB!");
 });
 
@@ -46,11 +46,12 @@ socketServer.on("connection", (socket) => {
   });
 
   socket.on("chat-message", async (data) => {
-    messages.push(data);
-    const username = data.username;
+    //messages.push(data);
+    console.log("Data: " + data);
+    const user = data.user;
     const message = data.message;
-    const result = await messageManager.create({ username, message });
-    socket.emit("messages", messages);
+    const result = await messageManager.create(user, message);
+    socket.emit("messages", result);
   });
 
   socket.on("new-user", (username) => {
