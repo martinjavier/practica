@@ -18,7 +18,7 @@ router.get("/real-time-carts", async (req, res) => {
   let products = await prodManager.getProducts();
   let cartManager = new CartManager();
   let carts = await cartManager.getCarts();
-  res.render("real_time_carts", { cart: carts });
+  res.render("real_time_carts", { carts: carts });
 });
 
 router.get("/chat", async (req, res) => {

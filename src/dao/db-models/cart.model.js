@@ -9,11 +9,11 @@ const cartsSchema = new mongoose.Schema({
           type: mongoose.Schema.Types.ObjectId,
           ref: "products",
         },
-        quantity: Number,
       },
     ],
     default: [],
   },
+  quantity: Number,
 });
 
 cartsSchema.plugin(mongoosePaginate);
