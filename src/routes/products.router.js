@@ -6,6 +6,7 @@ const productsRouter = Router();
 productsRouter.use(json());
 
 // Postman GET http://localhost:8080/api/products => Todos los productos
+// http://localhost:8080/api/products/?page=5
 productsRouter.get("/", async (req, res) => {
   const { page } = req.query;
   /*
@@ -18,7 +19,7 @@ productsRouter.get("/", async (req, res) => {
     }
   );
   */
-  const products = await productManager.getProducts();
+  const products = await productManager.getProducts(page);
   res.send(products);
 });
 

@@ -5,8 +5,11 @@ export default class ProductManager {
     console.log("Working with product using MongoDB");
   }
 
-  getProducts = async () => {
-    const products = await productModel.find().lean();
+  getProducts = async (page) => {
+    // const pagination = await productModel.paginate();
+    // const products = productModel.Product;
+    // const hasNextPage = pagination.hasNextPage;
+    const products = productModel.find().lean();
     return products;
   };
 
