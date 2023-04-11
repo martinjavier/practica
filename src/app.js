@@ -12,6 +12,7 @@ import { MessageManager } from "../src/dao/index.js";
 const app = express();
 const messages = [];
 const messageManager = new MessageManager();
+const connectionString = "";
 
 app.use(express.json());
 
@@ -28,7 +29,7 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/messages", messagesRouter);
 
-mongoose.connect("connection-string").then((conn) => {
+mongoose.connect(connectionString).then((conn) => {
   console.log("Connected To DB!");
 });
 
