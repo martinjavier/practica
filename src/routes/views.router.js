@@ -9,7 +9,10 @@ let products = [];
 
 router.get("/real-time-products", async (req, res) => {
   let prodManager = new ProductManager();
-  let products = await prodManager.getProducts();
+  let { page, limit } = req.query;
+  console.log("Page Views: " + page);
+  console.log("Limit Views: " + limit);
+  let products = await prodManager.getProducts(page, limit);
   res.render("real_time_products", { products: products });
 });
 
