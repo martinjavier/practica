@@ -37,6 +37,4 @@ productsSchema.pre("findOne", function () {
 
 const productModel = mongoose.model("products", productsSchema);
 
-//productModel.paginate().then({})
-
 export default productModel;

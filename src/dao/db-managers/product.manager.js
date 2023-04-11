@@ -5,11 +5,28 @@ export default class ProductManager {
     console.log("Working with product using MongoDB");
   }
 
-  getProducts = async (page) => {
-    // const pagination = await productModel.paginate();
-    // const products = productModel.Product;
-    // const hasNextPage = pagination.hasNextPage;
-    const products = productModel.find().lean();
+  getProducts = async (page, limit) => {
+    if (limit === undefined) {
+      limit = 3;
+    } else {
+      limit = limit;
+    }
+    if (page === undefined) {
+      page = 1;
+    } else {
+      page = page;
+    }
+    //const products = productModel.find().limit(limit).skip(page);
+
+    const products = await productModel.paginate(
+      {},
+      {
+        limit: limit,
+        lean: true,
+        page: page ?? 1,
+      }
+    );
+
     return products;
   };
 

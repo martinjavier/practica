@@ -17,17 +17,19 @@
         <td><b>thumbnails</b></td>
       </tr>
       {{#each products}}
-        <tr>
-          <td headers="id">{{_id}}</td>
-          <td headers="title">{{title}}</td>
-          <td headers="description">{{description}}</td>
-          <td headers="code">{{code}}</td>
-          <td headers="price">{{price}}</td>
-          <td headers="status">{{status}}</td>
-          <td headers="stock">{{stock}}</td>
-          <td headers="category">{{category}}</td>
-          <td headers="thumbnails">{{thumbnails}}</td>
-        </tr>
+      {{#each docs}}
+            <tr>
+              <td headers="id">{{_id}}</td>
+              <td headers="title">{{title}}</td>
+              <td headers="description">{{description}}</td>
+              <td headers="code">{{code}}</td>
+              <td headers="price">{{price}}</td>
+              <td headers="status">{{status}}</td>
+              <td headers="stock">{{stock}}</td>
+              <td headers="category">{{category}}</td>
+              <td headers="thumbnails">{{thumbnails}}</td>
+            </tr>
+      {{/each}}  
       {{/each}}
     </table>
       <div>
