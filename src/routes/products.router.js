@@ -50,9 +50,10 @@ productsRouter.delete("/:id", async (req, res) => {
 
 // Postman GET http://localhost:8080/api/products/64266458ef82d358d9ac3ea4
 productsRouter.get("/:id", async (req, res) => {
-  const { prodId } = req.params.id;
-  const product = await productManager.getOneProduct(prodId);
-  res.send(product);
+  const id = req.params.id;
+  console.log("Params ID: " + JSON.stringify(req.params.id));
+  const product = await productManager.getOneProd(id);
+  res.status(200).send({ status: "Ok", payload: product });
 });
 
 // Ej http://localhost:8080/products?limit=3 => Primeros tres productos
