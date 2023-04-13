@@ -21,6 +21,14 @@ router.get("/product/:id", async (req, res) => {
   res.render("oneproduct", { products: products });
 });
 
+router.get("/cart/:id", async (req, res) => {
+  let cartManager = new CartManager();
+  let cartId = req.params.id;
+  let carts = await cartManager.getOneCart(cartId);
+  console.log("Cart: " + carts);
+  res.render("onecart", { carts: carts });
+});
+
 router.get("/real-time-carts", async (req, res) => {
   let prodManager = new ProductManager();
   let products = await prodManager.getProducts();

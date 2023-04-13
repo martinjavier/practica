@@ -41,7 +41,6 @@ export default class ProductManager {
   };
 
   getOneProd = async (prodId) => {
-    console.log("GetOneProd: " + prodId);
     const product = await productModel.findById(prodId);
     return product;
   };

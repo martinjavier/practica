@@ -12,7 +12,8 @@ import { MessageManager } from "../src/dao/index.js";
 const app = express();
 const messages = [];
 const messageManager = new MessageManager();
-const connectionString = "";
+const connectionString =
+  "mongodb+srv://martinjavierd:omUWm0m05QI04tkc@cluster0.oonlc.mongodb.net/ecommerce?retryWrites=true&w=majority";
 
 app.use(express.json());
 

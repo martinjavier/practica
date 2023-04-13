@@ -28,7 +28,7 @@ export default class CartManager {
   };
 
   getOneCart = async (cartId) => {
-    const cart = await cartModel.findById(cartId).populate("products.products");
+    const cart = await cartModel.findById(cartId);
     return cart;
   };
 
