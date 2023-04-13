@@ -10,10 +10,15 @@ let products = [];
 router.get("/real-time-products", async (req, res) => {
   let prodManager = new ProductManager();
   let { page, limit } = req.query;
-  console.log("Page Views: " + page);
-  console.log("Limit Views: " + limit);
   let products = await prodManager.getProducts(page, limit);
   res.render("real_time_products", { products: products });
+});
+
+router.get("/product/:id", async (req, res) => {
+  let prodManager = new ProductManager();
+  let prodId = req.params.id;
+  let products = await prodManager.getOneProd(prodId);
+  res.render("oneproduct", { products: products });
 });
 
 router.get("/real-time-carts", async (req, res) => {

@@ -40,29 +40,9 @@ export default class ProductManager {
     return result;
   };
 
-  getOneProd = async (prodId, limit, page) => {
-    if (limit === undefined) {
-      limit = 3;
-    } else {
-      limit = limit;
-    }
-    if (page === undefined) {
-      page = 1;
-    } else {
-      page = page;
-    }
-    const product = await productModel.paginate(
-      {},
-      {
-        limit: limit,
-        lean: true,
-        page: page ?? 1,
-        prodId: prodId,
-      }
-    );
-
+  getOneProd = async (prodId) => {
+    console.log("GetOneProd: " + prodId);
+    const product = await productModel.findById(prodId);
     return product;
-    //const product = await productModel.findOne({ prodId });
-    //return product;
   };
 }

@@ -31,9 +31,11 @@ const productsSchema = new mongoose.Schema({
 
 productsSchema.plugin(mongoosePaginate);
 
+/*
 productsSchema.pre("findOne", function () {
   this.populate("products.products");
 });
+*/
 
 const productModel = mongoose.model("products", productsSchema);
 
