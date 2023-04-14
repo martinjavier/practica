@@ -4,6 +4,7 @@ import { ProductManager } from "../dao/index.js";
 
 const cartsManager = new CartManager();
 const cartsRouter = Router();
+const cartsFileRouter = Router();
 cartsRouter.use(json());
 
 const productManager = new ProductManager();
@@ -53,10 +54,11 @@ cartsRouter.put("/:cId/product/:pId", async (req, res) => {
   res.status(201).send({ status: "ok", payload: prodToUpdate });
 });
 
-/*
+/* cartsFileRouter
+
 // Ej http://localhost:8080/carts?limit=3 => Primeros tres carritos
 // Ej http://localhost:8080/carts => Todos los carritos
-cartsRouter.get("/", async (req, res) => {
+cartsFileRouter.get("/", async (req, res) => {
   // Recupero los carritos
   const carts = await cartsManager.getCarts();
   // Obtengo el valor de limit
@@ -78,7 +80,7 @@ cartsRouter.get("/", async (req, res) => {
 /*
 // Ej http://localhost:8080/carts/2 => Cart 2
 // Ej http://localhost:8080/cart/3412 => Error
-cartsRouter.get("/:id", async (req, res) => {
+cartsFileRouter.get("/:id", async (req, res) => {
   // Obtengo el valor del elemento
   let id = req.params.id;
   // Recupero el carrito
@@ -94,7 +96,7 @@ cartsRouter.get("/:id", async (req, res) => {
 
 /*
 // Postman POST { "products": [ { "id": "01202318416858", "quantity": 5 }, {"id": "01202318435129", "quantity": 10}, {"id": "01202318451768", "quantity": 15}] }
-cartsRouter.post("/", async (req, res) => {
+cartsFileRouter.post("/", async (req, res) => {
   const products = req.body.products;
   let newCart = await cartsManager.addCart(products);
   res.send(newCart);
@@ -103,7 +105,7 @@ cartsRouter.post("/", async (req, res) => {
 
 /*
 // Postman POST http://localhost:8080/api/carts/11202322154781/product/01202318451768
-cartsRouter.post("/:cid/product/:pid", async (req, res) => {
+cartsFileRouter.post("/:cid/product/:pid", async (req, res) => {
   // Recupero los valores de params
   const cartID = req.params.cid;
   const prodID = req.params.pid;
@@ -142,7 +144,7 @@ cartsRouter.post("/:cid/product/:pid", async (req, res) => {
 
 /*
 // Postman DELETE http://localhost:8080/api/carts/11202322030908
-cartsRouter.delete("/:cid", async (req, res) => {
+cartsFileRouter.delete("/:cid", async (req, res) => {
   // Recupero los valores de params
   const cartID = req.params.cid;
   let deletedCart = await cartsManager.deleteCart(cartID);
@@ -152,7 +154,7 @@ cartsRouter.delete("/:cid", async (req, res) => {
 
 /*
 // Postman DELETE http://localhost:8080/api/carts/212023215210444/product/01202318416858
-cartsRouter.delete("/:cid/product/:pid", async (req, res) => {
+cartsFileRouter.delete("/:cid/product/:pid", async (req, res) => {
   // Recupero los valores de params
   const cartID = req.params.cid;
   const prodID = req.params.pid;

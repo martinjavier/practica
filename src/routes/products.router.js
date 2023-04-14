@@ -3,6 +3,7 @@ import { ProductManager } from "../dao/index.js";
 
 const productManager = new ProductManager();
 const productsRouter = Router();
+const productsFileRouter = Router();
 productsRouter.use(json());
 
 // Postman GET http://localhost:8080/api/products => Todos los productos
@@ -55,10 +56,11 @@ productsRouter.get("/:id", async (req, res) => {
   res.status(200).send({ status: "Ok", payload: product });
 });
 
+/* FILE ROUTER
+
 // Ej http://localhost:8080/products?limit=3 => Primeros tres productos
 // Ej http://localhost:8080/products => Todos los productos
-/*
-productsRouter.get("/", async (req, res) => {
+productsFileRouter.get("/", async (req, res) => {
   // Recupero los productos
   const products = await manager.getProducts();
   // Obtengo el valor de limit
@@ -75,12 +77,12 @@ productsRouter.get("/", async (req, res) => {
     return res.send(selected);
   }
 });
-*/
+
 
 // Ej http://localhost:8080/products/2 => Prod 2
 // Ej http://localhost:8080/products/3412 => Error
-/*
-productsRouter.get("/:id", async (req, res) => {
+
+productsFileRouter.get("/:id", async (req, res) => {
   // Obtengo el valor del elemento
   let id = req.params.id;
   // Recupero el producto
@@ -93,10 +95,9 @@ productsRouter.get("/:id", async (req, res) => {
     res.send(product);
   }
 });
-*/
 
-/*
-productsRouter.post("/", async (req, res) => {
+
+productsFileRouter.post("/", async (req, res) => {
   const {
     title,
     description,
@@ -120,10 +121,8 @@ productsRouter.post("/", async (req, res) => {
   );
   res.send(newProd);
 });
-*/
 
-/*
-productsRouter.post("/:id", async (req, res) => {
+productsFileRouter.post("/:id", async (req, res) => {
   // Obtengo el valor del elemento
   let prodID = req.params.id;
   // Obtengo todos los valores del body
@@ -151,16 +150,15 @@ productsRouter.post("/:id", async (req, res) => {
   );
   res.send(updatedProd);
 });
-*/
 
-/*
-productsRouter.delete("/:id", async (req, res) => {
+productsFileRouter.delete("/:id", async (req, res) => {
   // Obtengo el valor del elemento
   let prodID = req.params.id;
   // Armo los valores actualizados del Producto
   let deletedProd = await manager.deleteProduct(prodID);
   res.send(deletedProd);
 });
+
 */
 
 export default productsRouter;

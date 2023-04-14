@@ -11,9 +11,9 @@ const cartsSchema = new mongoose.Schema({
         },
       },
     ],
+    quantity: Number,
     default: [],
   },
-  quantity: Number,
 });
 
 cartsSchema.plugin(mongoosePaginate);
