@@ -7,6 +7,23 @@ const router = Router();
 
 let products = [];
 
+// Rutas de las vistas
+router.get("/", (req, res) => {
+  res.render("home");
+});
+
+router.get("/login", (req, res) => {
+  res.render("login");
+});
+
+router.get("/signup", (req, res) => {
+  res.render("signup");
+});
+
+router.get("/profile", (req, res) => {
+  res.render("profile");
+});
+
 router.get("/real-time-products", async (req, res) => {
   let prodManager = new ProductManager();
   let { page, limit } = req.query;

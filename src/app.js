@@ -4,10 +4,14 @@ import __dirname from "./utils.js";
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
+import { authRouter } from "./routes/auth.routes.js";
+import { webRouter } from "./routes/web.routes.js";
 import messagesRouter from "./routes/message.router.js";
 import { Server } from "socket.io";
 import mongoose from "mongoose";
 import { MessageManager } from "../src/dao/index.js";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 
 const app = express();
 const messages = [];
@@ -27,6 +31,20 @@ app.use("/", viewsRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/messages", messagesRouter);
+app.use("/api/sessions", authRouter);
+app.use("/", webRouter);
+
+// Configuración de la sesión
+app.use(
+  session({
+    store: MongoStore.create({
+      mongoUrl: connectionString,
+    }),
+    secret: "claveSecreta",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
 
 mongoose.connect(connectionString).then((conn) => {
   console.log("Connected To DB!");
