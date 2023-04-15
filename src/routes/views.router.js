@@ -7,20 +7,19 @@ const router = Router();
 
 let products = [];
 
-// Rutas de las vistas
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   res.render("home");
 });
 
-router.get("/login", (req, res) => {
+router.get("/api/sessions/login", async (req, res) => {
   res.render("login");
 });
 
-router.get("/signup", (req, res) => {
+router.get("/api/sessions/signup", async (req, res) => {
   res.render("signup");
 });
 
-router.get("/profile", (req, res) => {
+router.get("/api/sessions/profile", async (req, res) => {
   res.render("profile");
 });
 

@@ -5,7 +5,6 @@ import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
 import { authRouter } from "./routes/auth.routes.js";
-import { webRouter } from "./routes/web.routes.js";
 import messagesRouter from "./routes/message.router.js";
 import { Server } from "socket.io";
 import mongoose from "mongoose";
@@ -17,7 +16,9 @@ const app = express();
 const messages = [];
 const messageManager = new MessageManager();
 const connectionString = "";
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Handlebars
 app.engine("handlebars", engine());
@@ -32,7 +33,6 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/messages", messagesRouter);
 app.use("/api/sessions", authRouter);
-app.use("/", webRouter);
 
 // Configuración de la sesión
 app.use(
