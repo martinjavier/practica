@@ -1,15 +1,37 @@
 import { Router } from "express";
 import { UserModel } from "../dao/db-models/user.model.js";
 import { createHash } from "../utils.js";
+import { isValidPassword } from "../utils.js";
 
 const router = Router();
 
 // Rutas de Autenticación
-router.post("/signup", async (req, res) => {
+
+router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     console.log("EMAIL: " + email);
     console.log("PASSWORD: " + password);
+    const user = await UserModel.findOne({ email: email });
+    if (user) {
+      if (isValidPassword(user, password)) {
+        console.log("SESSION: " + req.session);
+        req.session.user = user.email;
+        return res.send("Login successful");
+      } else {
+        res.send(`Wrong password`);
+      }
+    } else {
+      res.send(`User not found <a href="/api/sessions/signup">Signup</a>`);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.post("/signup", async (req, res) => {
+  try {
+    const { email, password } = req.body;
     const user = await UserModel.findOne({ email: email });
     if (!user) {
       const newUser = {

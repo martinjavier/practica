@@ -10,3 +10,7 @@ export default __dirname;
 export const createHash = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync());
 };
+
+export const isValidPassword = (user, loginPassword) => {
+  return bcrypt.compareSync(loginPassword, user.password);
+};
