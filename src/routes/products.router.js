@@ -51,9 +51,10 @@ productsRouter.delete("/:id", async (req, res) => {
 
 // Postman GET http://localhost:8080/api/products/64266458ef82d358d9ac3ea4
 productsRouter.get("/:id", async (req, res) => {
-  const { prodId } = req.params;
+  const prodId = req.params.id;
   const product = await productManager.getOneProd(prodId);
-  res.status(200).send({ status: "Ok", payload: product });
+  //res.status(200).send({ status: "Ok", payload: products });
+  res.render("oneproduct", { product: product });
 });
 
 /* FILE ROUTER

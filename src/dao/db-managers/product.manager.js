@@ -8,7 +8,7 @@ export default class ProductManager {
   // POSTMAN GET http://localhost:8080/api/products
   getProducts = async (page, limit) => {
     if (limit === undefined) {
-      limit = 3;
+      limit = 10;
     } else {
       limit = limit;
     }
@@ -44,7 +44,7 @@ export default class ProductManager {
 
   // POSTMAN GET http://localhost:8080/api/products/64266458ef82d358d9ac3ea4
   getOneProd = async (prodId) => {
-    const product = await productModel.findOne(prodId);
+    const product = await productModel.findById(prodId);
     return product;
   };
 }

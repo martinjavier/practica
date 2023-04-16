@@ -33,8 +33,8 @@ router.get("/real-time-products", async (req, res) => {
 router.get("/product/:id", async (req, res) => {
   let prodManager = new ProductManager();
   let prodId = req.params.id;
-  let products = await prodManager.getOneProd(prodId);
-  res.render("oneproduct", { products: products });
+  let product = await prodManager.getOneProd(prodId);
+  res.render("oneproduct", { product: product });
 });
 
 router.get("/cart/:id", async (req, res) => {

@@ -41,9 +41,9 @@ router.post("/signup", async (req, res) => {
       const userCreated = await UserModel.create(newUser);
       req.session.user = userCreated.email;
       //res.send("Usuario logueado");
-      res.redirect("api/sessions/profile");
+      return res.redirect("api/sessions/profile");
     } else {
-      res.send(
+      return res.send(
         `Usuario ya registrado <a href="/api/sessions/login">Inicia Sesión</a>`
       );
     }
