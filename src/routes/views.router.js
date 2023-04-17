@@ -11,15 +11,15 @@ router.get("/", async (req, res) => {
   res.render("home");
 });
 
-router.get("/api/sessions/login", async (req, res) => {
+router.get("/login", async (req, res) => {
   res.render("login");
 });
 
-router.get("/api/sessions/signup", async (req, res) => {
+router.get("/signup", async (req, res) => {
   res.render("signup");
 });
 
-router.get("/api/sessions/profile", async (req, res) => {
+router.get("/profile", async (req, res) => {
   res.render("profile");
 });
 

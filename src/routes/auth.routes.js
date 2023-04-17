@@ -2,62 +2,76 @@ import { Router } from "express";
 import { UserModel } from "../dao/db-models/user.model.js";
 import { createHash } from "../utils.js";
 import { isValidPassword } from "../utils.js";
+import passport from "passport";
 
 const router = Router();
 
 // Rutas de Autenticación
-
-router.post("/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    console.log("EMAIL: " + email);
-    console.log("PASSWORD: " + password);
-    const user = await UserModel.findOne({ email: email });
-    if (user) {
-      if (isValidPassword(user, password)) {
-        console.log("SESSION: " + req.session);
-        req.session.user = user.email;
-        return res.send("Login successful");
-      } else {
-        res.send(`Wrong password`);
-      }
-    } else {
-      res.send(`User not found <a href="/api/sessions/signup">Signup</a>`);
-    }
-  } catch (error) {
-    console.log(error);
+router.post(
+  "/signup",
+  passport.authenticate("signupStrategy", {
+    failureRedirect: "/api/sessions/failure-signup",
+  }),
+  (req, res) => {
+    res.send("Usuario Registrado");
   }
+);
+
+router.get("/failure-signup", (req, res) => {
+  res.send("No fue posible registrar al usuario");
 });
 
-router.post("/signup", async (req, res) => {
+router.post(
+  "/login",
+  passport.authenticate("loginStrategy", {
+    failureRedirect: "/api/sessions/login-failed",
+  }),
+  async (req, res) => {
+    if (!req.user) {
+      return res.status(401).send({ error: "Invalid Credentials" });
+    }
+    req.session.userId = req.user._id;
+    res.redirect("/profile");
+  }
+);
+
+router.get("/login-failed", (req, res) => {
+  res.send({ error: "Failed login" });
+});
+
+router.post("/forgot", async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await UserModel.findOne({ email: email });
-    if (!user) {
-      const newUser = {
-        email,
-        password: createHash(password),
-      };
-      const userCreated = await UserModel.create(newUser);
-      req.session.user = userCreated.email;
-      //res.send("Usuario logueado");
-      return res.redirect("api/sessions/profile");
+    if (user) {
+      user.password = createHash(password);
+      const userUpdate = await UserModel.findOneAndUpdate(
+        { email: user.email },
+        user
+      );
+      return res.send("Contraseña Actualizada");
     } else {
       return res.send(
-        `Usuario ya registrado <a href="/api/sessions/login">Inicia Sesión</a>`
+        `Usuario no está registrado <a href="/signup">Signup</a>`
       );
     }
   } catch (error) {
-    console.log(error);
+    return res.send("No se pudo restaurar la contraseña");
   }
 });
 
-router.post("/logout", (req, res) => {
-  req.session.destroy((error) => {
+router.get("/logout", async (req, res) => {
+  req.logOut((error) => {
     if (error) {
-      return res.send("La sesión no se ha podido cerrar");
+      return res.send("No se pudo cerrar la sesión");
     } else {
-      res.redirect("/");
+      req.session.destroy((err) => {
+        if (err) {
+          res.send("No se pudo cerrar la sesión");
+        } else {
+          res.send("Sesión Finalizada");
+        }
+      });
     }
   });
 });

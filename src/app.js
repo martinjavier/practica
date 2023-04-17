@@ -1,6 +1,7 @@
 import express from "express";
 import { engine } from "express-handlebars";
 import __dirname from "./utils.js";
+import path from "path";
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
@@ -11,12 +12,16 @@ import mongoose from "mongoose";
 import { MessageManager } from "../src/dao/index.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import passport from "passport";
+import { initializedPassport } from "../src/config/passport.config.js";
 
 const app = express();
 const messages = [];
 const messageManager = new MessageManager();
-const connectionString = "";
+const connectionString =
+  "mongodb+srv://martinjavierd:omUWm0m05QI04tkc@cluster0.oonlc.mongodb.net/ecommerce?retryWrites=true&w=majority";
 
+// Midlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -45,6 +50,11 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+// Configurar PASSPORT
+initializedPassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 mongoose.connect(connectionString).then((conn) => {
   console.log("Connected To DB!");
