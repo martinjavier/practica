@@ -9,18 +9,20 @@ const cartsSchema = new mongoose.Schema({
           type: mongoose.Schema.Types.ObjectId,
           ref: "products",
         },
+        quantity: Number,
       },
     ],
-    quantity: Number,
     default: [],
   },
 });
 
 cartsSchema.plugin(mongoosePaginate);
 
+/*
 cartsSchema.pre("findOne", function () {
   this.populate("products.products");
 });
+*/
 
 const cartModel = mongoose.model("carts", cartsSchema);
 

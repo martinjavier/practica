@@ -23,11 +23,11 @@ router.get("/profile", async (req, res) => {
   res.render("profile");
 });
 
-router.get("/real-time-products", async (req, res) => {
+router.get("/products", async (req, res) => {
   let prodManager = new ProductManager();
   let { page, limit } = req.query;
   let products = await prodManager.getProducts(page, limit);
-  res.render("real_time_products", { products: products });
+  res.render("products", { products: products });
 });
 
 router.get("/product/:id", async (req, res) => {
@@ -45,12 +45,12 @@ router.get("/cart/:id", async (req, res) => {
   res.render("onecart", { carts: carts });
 });
 
-router.get("/real-time-carts", async (req, res) => {
+router.get("/carts", async (req, res) => {
   let prodManager = new ProductManager();
   let products = await prodManager.getProducts();
   let cartManager = new CartManager();
   let carts = await cartManager.getCarts();
-  res.render("real_time_carts", { carts: carts });
+  res.render("carts", { carts: carts });
 });
 
 router.get("/chat", async (req, res) => {

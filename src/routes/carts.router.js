@@ -21,6 +21,7 @@ cartsRouter.get("/", async (req, res) => {
 // { "products": [ { "id": "01202318416858", "quantity": 5 }, {"id": "01202318435129", "quantity": 10}, {"id": "01202318451768", "quantity": 15}] }
 cartsRouter.post("/", async (req, res) => {
   const { products } = req.body;
+  console.log(products);
   const result = await cartsManager.create({ products });
   res.status(201).send({ status: "ok", payload: result });
 });
