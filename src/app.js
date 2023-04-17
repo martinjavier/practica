@@ -18,8 +18,7 @@ import { initializedPassport } from "../src/config/passport.config.js";
 const app = express();
 const messages = [];
 const messageManager = new MessageManager();
-const connectionString =
-  "mongodb+srv://martinjavierd:omUWm0m05QI04tkc@cluster0.oonlc.mongodb.net/ecommerce?retryWrites=true&w=majority";
+const connectionString = "";
 
 // Midlewares
 app.use(express.json());

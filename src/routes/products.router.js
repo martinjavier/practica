@@ -9,8 +9,15 @@ productsRouter.use(json());
 // Postman GET http://localhost:8080/api/products => Todos los productos
 // http://localhost:8080/api/products/?page=5
 productsRouter.get("/", async (req, res) => {
-  let { page, limit } = req.query;
-  const products = await productManager.getProducts(page, limit);
+  let { page, limit, sort, title, description, stock } = req.query;
+  const products = await productManager.getProducts(
+    page,
+    limit,
+    sort,
+    title,
+    description,
+    stock
+  );
   res.status(200).send({ status: "Ok", payload: products });
 });
 

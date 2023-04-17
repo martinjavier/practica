@@ -6,7 +6,13 @@ export default class ProductManager {
   }
 
   // POSTMAN GET http://localhost:8080/api/products
-  getProducts = async (page, limit) => {
+  // http://localhost:8080/api/products?sort=asc&page=2&limit=2
+  // http://localhost:8080/api/products?title=Segundo
+  // http://localhost:8080/api/products?title=Segundo&description=Descripción Segundo
+  // http://localhost:8080/api/products?title=Segundo&description=Descripción Segundo&stock=200
+  // http://localhost:8080/api/products?description=Descripción Segundo&stock=200
+
+  getProducts = async (page, limit, sort, title, description, stock) => {
     if (limit === undefined) {
       limit = 10;
     } else {
@@ -17,15 +23,42 @@ export default class ProductManager {
     } else {
       page = page;
     }
+    if (sort === "asc") {
+      sort = { price: 1 };
+    } else if (sort === "desc") {
+      sort = { price: -1 };
+    } else {
+      sort = null;
+    }
 
-    const products = await productModel.paginate(
-      {},
-      {
-        limit: limit,
-        lean: true,
-        page: page ?? 1,
-      }
-    );
+    let array = {};
+
+    if (title && !description && !stock) {
+      array = { title: title };
+    } else if (!title && !description && stock) {
+      array = { stock: stock };
+    } else if (!title && description && !stock) {
+      array = { description: description };
+    } else if (title && description && !stock) {
+      array = { title: title, description: description };
+    } else if (title && description && stock) {
+      array = { title: title, description: description, stock: stock };
+    } else if (title && !description && stock) {
+      array = { title: title, stock: stock };
+    } else if (!title && description && stock) {
+      array = { description: description, stock: stock };
+    } else {
+      array = {};
+    }
+
+    let query = array;
+
+    const products = await productModel.paginate(query, {
+      limit: limit,
+      lean: true,
+      page: page ?? 1,
+      sort: sort,
+    });
 
     return products;
   };
