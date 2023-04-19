@@ -5,7 +5,7 @@ import path from "path";
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
-import { authRouter } from "./routes/auth.routes.js";
+import { authRouter } from "./routes/auth.router.js";
 import messagesRouter from "./routes/message.router.js";
 import { Server } from "socket.io";
 import mongoose from "mongoose";
@@ -31,13 +31,6 @@ app.set("views", __dirname + "/views");
 
 app.use(express.static(__dirname + "/../public"));
 
-// Routers
-app.use("/", viewsRouter);
-app.use("/api/products", productsRouter);
-app.use("/api/carts", cartsRouter);
-app.use("/api/messages", messagesRouter);
-app.use("/api/sessions", authRouter);
-
 // Configuración de la sesión
 app.use(
   session({
@@ -54,6 +47,13 @@ app.use(
 initializedPassport();
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Routers
+app.use("/", viewsRouter);
+app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
+app.use("/api/messages", messagesRouter);
+app.use("/api/sessions", authRouter);
 
 mongoose.connect(connectionString).then((conn) => {
   console.log("Connected To DB!");

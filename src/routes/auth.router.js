@@ -10,6 +10,7 @@ const router = Router();
 router.post(
   "/signup",
   passport.authenticate("signupStrategy", {
+    successRedirect: "/profile",
     failureRedirect: "/api/sessions/failure-signup",
   }),
   (req, res) => {
@@ -24,6 +25,7 @@ router.get("/failure-signup", (req, res) => {
 router.post(
   "/login",
   passport.authenticate("loginStrategy", {
+    successRedirect: "/profile",
     failureRedirect: "/api/sessions/login-failed",
   }),
   async (req, res) => {

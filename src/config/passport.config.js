@@ -1,7 +1,9 @@
 import passport from "passport";
 import LocalStrategy from "passport-local";
 import { UserModel } from "../dao/db-models/user.model.js";
-import { createHash, isValidPassword } from "../utils.js";
+import { createHash } from "../utils.js";
+import { isValidPassword } from "../utils.js";
+import session from "express-session";
 
 const initializedPassport = () => {
   passport.use(
