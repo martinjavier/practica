@@ -25,7 +25,7 @@ router.get("/failure-signup", (req, res) => {
 router.post(
   "/login",
   passport.authenticate("loginStrategy", {
-    successRedirect: "/profile",
+    successRedirect: "/products",
     failureRedirect: "/api/sessions/login-failed",
   }),
   async (req, res) => {
@@ -38,7 +38,8 @@ router.post(
 );
 
 router.get("/login-failed", (req, res) => {
-  res.send({ error: "Failed login" });
+  //res.send({ error: "Failed login" });
+  res.redirect("/login");
 });
 
 router.post("/forgot", async (req, res) => {
@@ -71,7 +72,8 @@ router.get("/logout", async (req, res) => {
         if (err) {
           res.send("No se pudo cerrar la sesión");
         } else {
-          res.send("Sesión Finalizada");
+          //res.send("Sesión Finalizada");
+          res.redirect("/login");
         }
       });
     }

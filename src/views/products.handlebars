@@ -1,9 +1,15 @@
 <div>
-  <div>
-    <h3>Products</h3>
-  </div>
   <div id="productList"></div>
   <div>
+    <div
+      style="width:80%; background-color: #e6e4e4; font-size: 25px; color:#000000"
+    >
+      <h3>Bienvenido {{name}} {{email}}</h3>
+      <a href="/api/sessions/logout">Logout</a>
+    </div>
+    <div>
+      <h3>Products</h3>
+    </div>
     <table style="width:80%; background-color: #555555; font-size: 25px;">
       <tr style="background-color: #000000;">
         <td><b>id</b></td>
@@ -29,21 +35,24 @@
           <td headers="stock">{{stock}}</td>
           <td headers="category">{{category}}</td>
           <td headers="thumbnails">{{thumbnails}}</td>
-          <td headers="AddToCart"><a href="/api/carts/643dcb7726deb74740df26c3/product/{{_id}}">Add</a></td>
+          <td headers="AddToCart"><a
+              href="/api/carts/643dcb7726deb74740df26c3/product/{{_id}}"
+            >Add</a></td>
           <td headers="ShowProduct"><a href="/product/{{_id}}">Show</a></td>
-        </tr> 
+        </tr>
       {{/each}}
     </table>
-      <div>
-    {{#if products.hasPrevPage}}
-      <a href="/real-time-products?page={{products.prevPage}}">Prevoius</a>
-    {{/if}}
-    <span>Page {{products.page}} de {{products.totalPages}}</span>
-    {{#if products.hasNextPage}}
-      <a href="/real-time-products?page={{products.nextPage}}">Next</a>
-    {{/if}}
+    <div>
+      {{#if products.hasPrevPage}}
+        <a href="/products?page={{products.prevPage}}">Prevoius</a>
+      {{/if}}
+      <span>Page {{products.page}} de {{products.totalPages}}</span>
+      {{#if products.hasNextPage}}
+        <a href="/products?page={{products.nextPage}}">Next</a>
+      {{/if}}
+    </div>
   </div>
-  </div>
+</div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>

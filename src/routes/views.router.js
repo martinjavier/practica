@@ -2,13 +2,14 @@ import { Router } from "express";
 import { CartManager } from "../dao/index.js";
 import { ProductManager } from "../dao/index.js";
 import { MessageManager } from "../dao/index.js";
+import passport from "passport";
 
 const router = Router();
 
 let products = [];
 
 router.get("/", async (req, res) => {
-  res.render("home");
+  res.render("login");
 });
 
 router.get("/login", async (req, res) => {
@@ -27,7 +28,12 @@ router.get("/products", async (req, res) => {
   let prodManager = new ProductManager();
   let { page, limit } = req.query;
   let products = await prodManager.getProducts(page, limit);
-  res.render("products", { products: products });
+  res.render("products", {
+    products: products,
+    user: JSON.stringify(req.session.passport.user),
+    name: JSON.stringify(req.user.name),
+    email: JSON.stringify(req.user.email),
+  });
 });
 
 router.get("/product/:id", async (req, res) => {
