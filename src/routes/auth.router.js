@@ -22,6 +22,19 @@ router.get("/failure-signup", (req, res) => {
   res.send("No fue posible registrar al usuario");
 });
 
+router.get("/github", passport.authenticate("githubSignup"));
+
+router.get(
+  "/github-callback",
+  passport.authenticate("githubSignup", {
+    failureRedirect: "/api/sessions/failure-signup",
+  }),
+  (req, res) => {
+    //res.send("Usuario Autenticado");
+    res.redirect("/products");
+  }
+);
+
 router.post(
   "/login",
   passport.authenticate("loginStrategy", {
