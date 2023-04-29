@@ -15,16 +15,22 @@ const initializedPassport = () => {
       },
       async (req, username, password, done) => {
         try {
-          const { name, age } = req.body;
+          const { name } = req.body;
           const user = await UserModel.findOne({ email: username });
           if (user) {
             return done(null, false);
           }
+          // Creamos el usuario
+          let role = "user";
+          if (username.endsWith("@coder.com")) {
+            role = "admin";
+          }
+          // Si no existe el usuario lo registramos
           const newUser = {
             name,
-            age,
             email: username,
             password: createHash(password),
+            role,
           };
           const userCreated = await UserModel.create(newUser);
           return done(null, userCreated);
@@ -42,13 +48,15 @@ const initializedPassport = () => {
       async (username, password, done) => {
         try {
           const user = await UserModel.findOne({ email: username });
+          // if user doesn't exists
           if (!user) {
-            console.log(`User with email ${username} not found`);
             return done(null, false);
           }
+          // verify password
           if (!isValidPassword(user, password)) {
             return done(null, false);
           }
+          // If user exists and password is right
           return done(null, user);
         } catch (error) {
           return done(error);
@@ -67,10 +75,9 @@ const initializedPassport = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          console.log("profile", profile);
           const userExists = await UserModel.findOne({ email: profile.email });
           if (userExists) {
-            return done(null, userExists);
+            return done(null, false);
           } else {
             const newUser = {
               name: profile._json.name,
@@ -90,7 +97,7 @@ const initializedPassport = () => {
 
   // SERIALIZAR y DESERIALIZAR USUARIOS
   passport.serializeUser((user, done) => {
-    return done(null, user._id);
+    return done(null, user._id); // session {cookie, passport:user.id}
   });
 
   passport.deserializeUser(async (id, done) => {

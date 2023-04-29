@@ -1,8 +1,10 @@
 import { Router } from "express";
 import { UserModel } from "../dao/db-models/user.model.js";
+import UserManager from "../dao/db-managers/user.manager.js";
 import { createHash } from "../utils.js";
 import { isValidPassword } from "../utils.js";
 import passport from "passport";
+import alert from "alert";
 
 const router = Router();
 
@@ -10,16 +12,17 @@ const router = Router();
 router.post(
   "/signup",
   passport.authenticate("signupStrategy", {
-    successRedirect: "/profile",
     failureRedirect: "/api/sessions/failure-signup",
   }),
   (req, res) => {
-    res.send("Usuario Registrado");
+    res.redirect("/products");
   }
 );
 
 router.get("/failure-signup", (req, res) => {
-  res.send("No fue posible registrar al usuario");
+  res.send(
+    `<div>There was a problem with the signup, try again <a href='/signup'>Signup</a></div>`
+  );
 });
 
 router.get("/github", passport.authenticate("githubSignup"));
@@ -38,7 +41,6 @@ router.get(
 router.post(
   "/login",
   passport.authenticate("loginStrategy", {
-    successRedirect: "/products",
     failureRedirect: "/api/sessions/login-failed",
   }),
   async (req, res) => {
@@ -46,12 +48,13 @@ router.post(
       return res.status(401).send({ error: "Invalid Credentials" });
     }
     req.session.userId = req.user._id;
-    res.redirect("/profile");
+    res.redirect("/products");
   }
 );
 
 router.get("/login-failed", (req, res) => {
   //res.send({ error: "Failed login" });
+  alert("Wrong Credentials");
   res.redirect("/login");
 });
 
@@ -77,20 +80,8 @@ router.post("/forgot", async (req, res) => {
 });
 
 router.get("/logout", async (req, res) => {
-  req.logOut((error) => {
-    if (error) {
-      return res.send("No se pudo cerrar la sesión");
-    } else {
-      req.session.destroy((err) => {
-        if (err) {
-          res.send("No se pudo cerrar la sesión");
-        } else {
-          //res.send("Sesión Finalizada");
-          res.redirect("/login");
-        }
-      });
-    }
-  });
+  req.logout();
+  res.redirect("/login");
 });
 
 export { router as authRouter };

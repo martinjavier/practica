@@ -3,6 +3,7 @@ import { CartManager } from "../dao/index.js";
 import { ProductManager } from "../dao/index.js";
 import { MessageManager } from "../dao/index.js";
 import passport from "passport";
+import alert from "alert";
 
 const router = Router();
 
@@ -21,19 +22,30 @@ router.get("/signup", async (req, res) => {
 });
 
 router.get("/profile", async (req, res) => {
-  res.render("profile");
+  try {
+    res.render("profile");
+  } catch (error) {
+    alert("Must be authenticated");
+    res.redirect("/login");
+  }
 });
 
 router.get("/products", async (req, res) => {
-  let prodManager = new ProductManager();
-  let { page, limit } = req.query;
-  let products = await prodManager.getProducts(page, limit);
-  res.render("products", {
-    products: products,
-    user: JSON.stringify(req.session.passport.user),
-    name: JSON.stringify(req.user.name),
-    email: JSON.stringify(req.user.email),
-  });
+  try {
+    let prodManager = new ProductManager();
+    let { page, limit } = req.query;
+    let products = await prodManager.getProducts(page, limit);
+    res.render("products", {
+      products: products,
+      user: JSON.stringify(req.session.passport.user),
+      name: JSON.stringify(req.user.name),
+      email: JSON.stringify(req.user.email),
+      role: JSON.stringify(req.user.role).toUpperCase(),
+    });
+  } catch (error) {
+    alert("Must be authenticated");
+    res.redirect("/login");
+  }
 });
 
 router.get("/product/:id", async (req, res) => {
@@ -43,12 +55,15 @@ router.get("/product/:id", async (req, res) => {
   res.render("oneproduct", { product: product });
 });
 
-router.get("/cart/:id", async (req, res) => {
+router.get("/cart/:cid", async (req, res) => {
   let cartManager = new CartManager();
-  let cartId = req.params.id;
-  let carts = await cartManager.getOneCart(cartId);
-  console.log("Cart: " + carts);
-  res.render("onecart", { carts: carts });
+  try {
+    let cartId = req.params.cid;
+    let carts = await cartManager.getOneCart(cartId);
+    res.render("onecart", { cart: carts });
+  } catch (error) {
+    res.send(`<div>Was an error loading this view</div>`);
+  }
 });
 
 router.get("/carts", async (req, res) => {
